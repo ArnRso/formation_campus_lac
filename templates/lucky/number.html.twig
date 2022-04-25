@@ -1,0 +1,24 @@
+<style>
+    .available {
+        color: green;
+    }
+
+    .not-available {
+        color: #a43d3d;
+    }
+</style>
+
+<h1>Le nombre magique est : {{ number }}</h1>
+
+{% for book in books %}
+    <h2
+        {% if book.available %}
+            class="available"
+        {% else %}
+            class="not-available"
+        {% endif %}
+    >
+        {{ book.title }}
+    </h2>
+    <p>écrit par {{ book.author.firstname }} {{ book.author.lastname }}</p>
+{% endfor %}

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Bonjour {{name}}</h2>
+    <h3>{{age}}</h3>
+    {% for book in books %}
+       {% include 'book/_bookCard.html.twig' %}
+    {% endfor %}
+    <form action="" method="get">
+        <input type="text" id="name" name="name">
+        <input type="text" id="age" name="age">
+        <input type="submit" value="submit">
+    </form>
+{% endblock body %}
+
+{% block page_title %}
+    {{ page_title }}
+{% endblock %}
+
+{%block css%}
+    {{ parent() }}
+    <style>
+        h1 {
+            text-decoration: underline;
+        }
+    </style>
+{%endblock%}
+

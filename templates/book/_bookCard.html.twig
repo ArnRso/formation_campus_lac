@@ -1,0 +1,10 @@
+<h2
+        {% if book.available %}
+            class="available"
+        {% else %}
+            class="not-available"
+        {% endif %}
+>
+    {{ book.title }}
+</h2>
+<p>écrit par {{ book.author.firstname }} {{ book.author.lastname }}</p>
