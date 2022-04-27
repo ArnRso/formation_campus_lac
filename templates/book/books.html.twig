@@ -2,6 +2,7 @@
 
 {% block body %}
     <h1>Liste des livres</h1>
+    <a href="{{ path('book_new')}}">Créer un nouveau livre</a>
     <div class="row">
         {% for book in books %}
             <div class="col col-3">
