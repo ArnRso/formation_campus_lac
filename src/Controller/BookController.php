@@ -28,16 +28,24 @@ class BookController extends AbstractController
     #[Route('/books/new', name: 'book_new')]
     public function bookNew(Request $request, EntityManagerInterface $entityManager)
     {
+        // Crée une nouvelle instance d'un livre, qu'on passera au formulaire
         $newBook = new Book();
+        // Crée le formulaire en utilisant BookType, qui est le modèle de formulaire. Il contient
+        // la liste des champs à générer
         $form = $this->createForm(BookType::class, $newBook);
 
+        // Traite la requête pour vérifier si les données du formulaire sont soumises
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
+            // Récupère les données du formulaire
             $bookToSave = $form->getData();
+            // Le persist permet de préparer les requêtes (SQL) à exécuter en DB
             $entityManager->persist($bookToSave);
+            // Exécute toutes les requêtes SQL préparées précédemment
             $entityManager->flush();
 
+            // Ajoute un message éphémère pour avertir de l'état de la demande
             $this->addFlash('success', 'Votre livre à été créé avec succès.');
 
             return $this->redirectToRoute('book_listing');
@@ -51,6 +59,7 @@ class BookController extends AbstractController
     #[Route('/books/{id}/edit', name: 'book_edit')]
     public function bookEdit($id, BookRepository $bookRepository, Request $request, EntityManagerInterface $entityManager)
     {
+        // Récupère un livre en DB, celui qui a l'id précisé dans l'URL
         $book = $bookRepository->findOneBy([
             'id' => $id
         ]);
@@ -86,6 +95,7 @@ class BookController extends AbstractController
             'id' => $id
         ]);
 
+        // Prépare la requête pour supprimer le livre de la DB
         $entityManager->remove($book);
         $entityManager->flush();
 

@@ -13,6 +13,10 @@ class BookType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // la méthode add accepte 3 paramètres :
+        // le premier est le nom de la propriété de l'entité
+        // le second est le type de champ voulu
+        // le troisième est un tableau d'options à passer au formulaire.
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre du livre',
