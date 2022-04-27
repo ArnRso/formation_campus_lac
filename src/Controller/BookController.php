@@ -38,6 +38,8 @@ class BookController extends AbstractController
             $entityManager->persist($bookToSave);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Votre livre à été créé avec succès.');
+
             return $this->redirectToRoute('book_listing');
         }
 
@@ -54,6 +56,7 @@ class BookController extends AbstractController
         ]);
 
         if (!$book) {
+            $this->addFlash('warning', 'Aucun livre trouvé.');
             return $this->redirectToRoute('book_listing');
         }
 
@@ -66,6 +69,8 @@ class BookController extends AbstractController
             $entityManager->persist($bookToSave);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Votre livre à été modifié avec succès.');
+
             return $this->redirectToRoute('book_listing');
         }
 
@@ -73,6 +78,23 @@ class BookController extends AbstractController
             'bookForm' => $form->createView()
         ]);
     }
+
+    #[Route('/books/{id}/delete', name: 'book_delete')]
+    public function bookDelete($id, BookRepository $bookRepository, EntityManagerInterface $entityManager)
+    {
+        $book = $bookRepository->findOneBy([
+            'id' => $id
+        ]);
+
+        $entityManager->remove($book);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Votre livre a été supprimé.');
+
+        return $this->redirectToRoute('book_listing');
+    }
+
+
 
     // créer une route et un controller avec comme url /books/{id}
     #[Route('/books/{id}', name: 'book_detail')]
@@ -82,6 +104,7 @@ class BookController extends AbstractController
         ]);
 
         if (!$book) {
+            $this->addFlash('success', 'Votre livre a été supprimé.');
             return $this->redirectToRoute('book_listing');
         }
 

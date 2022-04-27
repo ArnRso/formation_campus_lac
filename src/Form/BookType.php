@@ -20,7 +20,12 @@ class BookType extends AbstractType
                     'placeholder' => 'Merci de renseigner le titre du livre'
                 ]
             ])
-            ->add('author', TextType::class)
+            ->add('author', TextType::class, [
+                'label' => 'Auteur du livre',
+                'attr' => [
+                    'placeholder' => 'Merci de renseigner l\'auteur du livre'
+                ]
+            ])
             ->add('isbn', NumberType::class, [
                 'constraints' => [
                     new Length([
@@ -29,12 +34,17 @@ class BookType extends AbstractType
                         'minMessage' => 'Le ISBN est trop court',
                         'maxMessage' => 'Le ISBN est trop long'
                     ])
+                ],
+                'label' => 'Référence ISBN',
+                'attr' => [
+                    'placeholder' => 'Merci de renseigner la référence ISBN du livre'
                 ]
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-success'
-                ]
+                ],
+                'label' => 'Enregistrer'
             ])
         ;
     }
