@@ -20,4 +20,16 @@ class BookController extends AbstractController
             'books' => $books
         ]);
     }
+
+    // créer une route et un controller avec comme url /books/{id}
+    #[Route('/books/{id}', name: 'book_detail')]
+    public function bookDetail ($id, BookRepository $bookRepository){
+        $book = $bookRepository->findOneBy([
+            'id' => $id
+        ]);
+
+        return $this->render('book/bookDetail.html.twig', [
+            'book' => $book
+        ]);
+    }
 }

@@ -4,7 +4,9 @@
     {% for book in books %}
         <article>
             <h2>
-                {{ book.title }}
+                <a href="{{ path('book_detail', {id: book.id}) }}">
+                    {{ book.title }}
+                </a>
             </h2>
             <p>
                 Ecrit par {{ book.author }}

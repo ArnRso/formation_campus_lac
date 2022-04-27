@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('book_listing') }}" class="btn btn-secondary">Retour</a>
+    <article>
+        <h2>
+            Page de détail du livre : {{ book.title }}
+        </h2>
+        <p>
+            Ecrit par {{ book.author }}
+        </p>
+        <p>ISBN : {{ book.isbn }}</p>
+    </article>
+{% endblock %}
