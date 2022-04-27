@@ -1,17 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for book in books %}
-        <article>
-            <h2>
-                <a href="{{ path('book_detail', {id: book.id}) }}">
-                    {{ book.title }}
-                </a>
-            </h2>
-            <p>
-                Ecrit par {{ book.author }}
-            </p>
-            <p>ISBN : {{ book.isbn }}</p>
-        </article>
-    {% endfor %}
+    <h1>Liste des livres</h1>
+    <div class="row">
+        {% for book in books %}
+            <div class="col col-3">
+                <article class="card">
+                    <img src="" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">
+                            Ecrit par {{ book.author }}
+                            <br>
+                            ISBN : {{ book.isbn }}
+                        </p>
+                        <a href="{{ path('book_detail', {id: book.id}) }}" class="btn btn-primary">Voir le détail</a>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock body %}
