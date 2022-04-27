@@ -21,7 +21,7 @@ class Book
     #[ORM\Column(type: 'text', length: 255)]
     private $author;
 
-    #[ORM\Column(type: 'integer', unique: true)]
+    #[ORM\Column(type: 'string')]
     private $isbn;
 
     /**

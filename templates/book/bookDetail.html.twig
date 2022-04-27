@@ -12,4 +12,5 @@
         <p>ISBN : {{ book.isbn }}</p>
     </article>
     <a href="{{ path('book_listing') }}" class="btn btn-secondary">Retour</a>
+    <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-primary">Modifier le livre</a>
 {% endblock %}
