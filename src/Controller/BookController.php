@@ -74,8 +74,6 @@ class BookController extends AbstractController
         ]);
     }
 
-
-
     // créer une route et un controller avec comme url /books/{id}
     #[Route('/books/{id}', name: 'book_detail')]
     public function bookDetail ($id, BookRepository $bookRepository){
