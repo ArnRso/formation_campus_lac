@@ -23,6 +23,13 @@ class Author {
     #[ORM\Column(type: 'date')]
     private $dateOfBirth;
 
+    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: "author")]
+    private $books;
+
+    public function __toString() {
+        return $this->getFirstName() . ' ' . $this->getLastName();
+    }
+
     /**
      * @return mixed
      */
@@ -85,5 +92,21 @@ class Author {
     public function setDateOfBirth($dateOfBirth): void
     {
         $this->dateOfBirth = $dateOfBirth;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBooks()
+    {
+        return $this->books;
+    }
+
+    /**
+     * @param mixed $books
+     */
+    public function setBooks($books): void
+    {
+        $this->books = $books;
     }
 }

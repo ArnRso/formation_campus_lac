@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\Author;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,11 +26,9 @@ class BookType extends AbstractType
                     'placeholder' => 'Merci de renseigner le titre du livre'
                 ]
             ])
-            ->add('author', TextType::class, [
+            ->add('author', EntityType::class, [
                 'label' => 'Auteur du livre',
-                'attr' => [
-                    'placeholder' => 'Merci de renseigner l\'auteur du livre'
-                ]
+                'class' => Author::class
             ])
             ->add('isbn', NumberType::class, [
                 'constraints' => [

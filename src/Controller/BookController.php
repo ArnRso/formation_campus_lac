@@ -114,7 +114,7 @@ class BookController extends AbstractController
         ]);
 
         if (!$book) {
-            $this->addFlash('success', 'Votre livre a été supprimé.');
+            $this->addFlash('warning', 'Aucun livre trouvé.');
             return $this->redirectToRoute('book_listing');
         }
 

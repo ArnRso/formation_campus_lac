@@ -18,7 +18,7 @@ class Book
     #[ORM\Column(type: 'text', length: 255)]
     private $title;
 
-    #[ORM\Column(type: 'text', length: 255)]
+    #[ORM\ManyToOne(targetEntity: Author::class, inversedBy: "books")]
     private $author;
 
     #[ORM\Column(type: 'string')]
