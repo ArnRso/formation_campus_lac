@@ -105,6 +105,11 @@ class Book
         return $this->kinds;
     }
 
+    public function setKinds($kinds)
+    {
+        $this->kinds = $kinds;
+    }
+
     public function addKind(BookKind $bookKind)
     {
         if (!$this->kinds->contains($bookKind)) {

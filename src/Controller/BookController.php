@@ -19,7 +19,7 @@ class BookController extends AbstractController
     #[Route('/', name: 'book_listing')]
     public function books(BookRepository $bookRepository)
     {
-        $books = $bookRepository->findAll();
+        $books = $bookRepository->findBooksWithAuthor();
         return $this->render('book/books.html.twig', [
             'books' => $books
         ]);
@@ -109,9 +109,7 @@ class BookController extends AbstractController
     // créer une route et un controller avec comme url /books/{id}
     #[Route('/books/{id}', name: 'book_detail')]
     public function bookDetail ($id, BookRepository $bookRepository){
-        $book = $bookRepository->findOneBy([
-            'id' => $id
-        ]);
+        $book = $bookRepository->findOneBookByIdWithAuthorAndBookKind($id);
 
         if (!$book) {
             $this->addFlash('warning', 'Aucun livre trouvé.');
