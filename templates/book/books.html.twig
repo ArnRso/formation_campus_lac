@@ -2,6 +2,9 @@
 
 {% block body %}
     <h1>Liste des livres</h1>
+    <div id="search-form">
+        {{ form(form) }}
+    </div>
     <a href="{{ path('book_new')}}">Créer un nouveau livre</a>
     <div class="row">
         {% for book in books %}

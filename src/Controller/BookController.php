@@ -5,6 +5,7 @@ namespace App\Controller;
 // Les use, équivalents aux "require", représentent toutes les classes qui sont utilisées
 // dans le fichier.
 use App\Entity\Book;
+use App\Form\BookSearchFormType;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,11 +18,21 @@ class BookController extends AbstractController
     // La route tire partie du paramètre name.
     // Au sein de notre code, il faudra utiliser ce nom lorsqu'on voudra y faire référence
     #[Route('/', name: 'book_listing')]
-    public function books(BookRepository $bookRepository)
+    public function books(BookRepository $bookRepository, Request $request)
     {
-        $books = $bookRepository->findBooksWithAuthor();
+        $form = $this->createForm(BookSearchFormType::class);
+
+        $form->handleRequest($request);
+
+        $searchFormValues = [];
+        if ($form->isSubmitted() && $form->isValid()) {
+            $searchFormValues = $form->getData();
+        }
+
+        $books = $bookRepository->findBooksWithAuthor($searchFormValues);
         return $this->render('book/books.html.twig', [
-            'books' => $books
+            'books' => $books,
+            'form' => $form->createView()
         ]);
     }
 

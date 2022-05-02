@@ -13,13 +13,33 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-    public function findBooksWithAuthor()
+    public function findBooksWithAuthor($searchFormValues)
     {
         $qb = $this->createQueryBuilder('book')
             ->select('book')
-            ->join('book.author', 'author')
+            ->leftJoin('book.author', 'author')
             ->addSelect('author')
         ;
+
+        if (!empty($searchFormValues['title'])) {
+            $qb->andWhere('book.title LIKE :title')
+                ->setParameter('title', '%' . $searchFormValues['title'] .'%');
+        }
+
+        if (!empty($searchFormValues['author'])) {
+            $qb->andWhere('book.author = :author')
+                ->setParameter('author', $searchFormValues['author']);
+        }
+
+        if (!empty($searchFormValues['isbn'])) {
+            $qb->andWhere('book.isbn = :isbn')
+                ->setParameter('isbn', $searchFormValues['isbn']);
+        }
+
+//        if (!empty($searchFormValues['kind'])) {
+//            $qb->andWhere(':kind MEMBER OF book.kinds')
+//                ->setParameter('kind', $searchFormValues['kind']);
+//        }
 
         $query = $qb->getQuery();
         return $query->execute();
@@ -29,9 +49,9 @@ class BookRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('book')
             ->select('book')
-            ->join('book.author', 'author')
+            ->leftJoin('book.author', 'author')
             ->addSelect('author')
-            ->join('book.kinds', 'kinds')
+            ->leftJoin('book.kinds', 'kinds')
             ->addSelect('kinds')
             ->where('book.id = :id')
             ->setParameter('id', $id)
