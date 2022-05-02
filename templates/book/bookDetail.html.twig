@@ -11,6 +11,13 @@
         </p>
         <p>ISBN : {{ book.isbn }}</p>
 
+        <h3>Genres du livre</h3>
+        <ul>
+            {% for kind in book.kinds %}
+                <li>{{ kind.label }}</li>
+            {% endfor %}
+        </ul>
+
         <h3>Détails de l'auteur</h3>
         <p>
             Prénom: {{ book.author.firstName }}

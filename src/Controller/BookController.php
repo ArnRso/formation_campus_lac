@@ -16,7 +16,7 @@ class BookController extends AbstractController
 {
     // La route tire partie du paramètre name.
     // Au sein de notre code, il faudra utiliser ce nom lorsqu'on voudra y faire référence
-    #[Route('/books', name: 'book_listing')]
+    #[Route('/', name: 'book_listing')]
     public function books(BookRepository $bookRepository)
     {
         $books = $bookRepository->findAll();

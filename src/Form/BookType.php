@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Author;
+use App\Entity\BookKind;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -43,6 +44,12 @@ class BookType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Merci de renseigner la référence ISBN du livre'
                 ]
+            ])
+            ->add('kinds', EntityType::class, [
+                'label' => 'Genre du livre',
+                'multiple' => true,
+                'expanded' => true,
+                'class' => BookKind::class
             ])
             ->add('save', SubmitType::class, [
                 'attr' => [

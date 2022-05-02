@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 // Indique à doctrine qu'il faut surveiller cette entité
@@ -23,6 +24,14 @@ class Book
 
     #[ORM\Column(type: 'string')]
     private $isbn;
+
+    #[ORM\ManyToMany(targetEntity: BookKind::class, inversedBy: 'books')]
+    private $kinds;
+
+    public function __construct()
+    {
+        $this->kinds = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -87,4 +96,27 @@ class Book
     {
         $this->isbn = $isbn;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getKinds()
+    {
+        return $this->kinds;
+    }
+
+    public function addKind(BookKind $bookKind)
+    {
+        if (!$this->kinds->contains($bookKind)) {
+            $this->kinds->add($bookKind);
+        }
+    }
+
+    public function removeKind(BookKind $bookKind)
+    {
+        if ($this->kinds->contains($bookKind)) {
+            $this->kinds->remove($bookKind);
+        }
+    }
+
 }

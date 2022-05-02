@@ -17,6 +17,14 @@ class BookKind
     #[ORM\Column(type: 'text', length: 255)]
     private $label;
 
+    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'kinds')]
+    private $books;
+
+    public function __toString()
+    {
+        return $this->getLabel();
+    }
+
     /**
      * @return mixed
      */
