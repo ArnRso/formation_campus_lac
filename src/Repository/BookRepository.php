@@ -13,15 +13,20 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
+    // Méthode de repository custom qui prend en paramètre les données reçues depuis le formulaire de recherche.
     public function findBooksWithAuthor($searchFormValues)
     {
         $qb = $this->createQueryBuilder('book')
+            // Rajoute les tables souhaitées au select
             ->select('book')
+            // Rajoute les jointures souhaitées à la requete
             ->leftJoin('book.author', 'author')
             ->addSelect('author')
         ;
 
+        // Si la clé title n'est pas empty dans les données qui viennent du formulaire de recherche, on entre dans la condition
         if (!empty($searchFormValues['title'])) {
+            // passe le titre au sein d'un arguent LIKE
             $qb->andWhere('book.title LIKE :title')
                 ->setParameter('title', '%' . $searchFormValues['title'] .'%');
         }
@@ -41,7 +46,9 @@ class BookRepository extends ServiceEntityRepository
                 ->setParameter('kinds', $searchFormValues['kinds']);
         }
 
+        // Prépare la requete
         $query = $qb->getQuery();
+        // Exécute la requête
         return $query->execute();
     }
 

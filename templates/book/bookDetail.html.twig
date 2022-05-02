@@ -24,12 +24,14 @@
             <br>
             Nom: {{ book.author.lastName }}
             <br>
-            <a href="{{path('author_detail', {id: book.author.id})}}">
+            <a href="{{ path('author_detail', {id: book.author.id}) }}">
                 Lien de l'auteur
             </a>
         </p>
     </article>
     <a href="{{ path('book_listing') }}" class="btn btn-secondary">Retour</a>
-    <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-primary">Modifier le livre</a>
-    <a href="{{ path('book_delete', {id: book.id}) }}" class="btn btn-danger">Supprimer le livre</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-primary">Modifier le livre</a>
+        <a href="{{ path('book_delete', {id: book.id}) }}" class="btn btn-danger">Supprimer le livre</a>
+    {% endif %}
 {% endblock %}

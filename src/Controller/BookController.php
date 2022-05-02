@@ -29,6 +29,7 @@ class BookController extends AbstractController
             $searchFormValues = $form->getData();
         }
 
+        // utilise une méthode custom crée par nos soins du repository
         $books = $bookRepository->findBooksWithAuthor($searchFormValues);
         return $this->render('book/books.html.twig', [
             'books' => $books,
@@ -70,8 +71,7 @@ class BookController extends AbstractController
     #[Route('/books/{id}/edit', name: 'book_edit')]
     public function bookEdit($id, BookRepository $bookRepository, Request $request, EntityManagerInterface $entityManager)
     {
-        $user =$this->getUser();
-//        dd($user);
+        // Vérifie si l'utilisateur a le ROLE_ADMIN
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('book_listing');
         }
@@ -126,6 +126,7 @@ class BookController extends AbstractController
     // créer une route et un controller avec comme url /books/{id}
     #[Route('/books/{id}', name: 'book_detail')]
     public function bookDetail ($id, BookRepository $bookRepository){
+        // Utilise une méthode custom du repositoru pour récupérer les livres avec toutes les jointures souhaitées
         $book = $bookRepository->findOneBookByIdWithAuthorAndBookKind($id);
 
         if (!$book) {

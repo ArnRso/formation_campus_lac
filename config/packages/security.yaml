@@ -32,7 +32,7 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
-    # Easy way to control access for large sections of your site
+    # Un moyen simple de contrôler l'accès à de larges sections de votre site.
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/bookKinds, roles: ROLE_ADMIN }

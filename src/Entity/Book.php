@@ -112,6 +112,7 @@ class Book
 
     public function addKind(BookKind $bookKind)
     {
+        // Vérifie qu'un genre ne soit pas déjà attribué avant de l'ajouter
         if (!$this->kinds->contains($bookKind)) {
             $this->kinds->add($bookKind);
         }
@@ -119,6 +120,7 @@ class Book
 
     public function removeKind(BookKind $bookKind)
     {
+        // Vérifie que le livre a le genre qu'on souhaite enlever
         if ($this->kinds->contains($bookKind)) {
             $this->kinds->remove($bookKind);
         }
