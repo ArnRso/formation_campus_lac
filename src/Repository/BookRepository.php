@@ -36,10 +36,10 @@ class BookRepository extends ServiceEntityRepository
                 ->setParameter('isbn', $searchFormValues['isbn']);
         }
 
-//        if (!empty($searchFormValues['kind'])) {
-//            $qb->andWhere(':kind MEMBER OF book.kinds')
-//                ->setParameter('kind', $searchFormValues['kind']);
-//        }
+        if (!empty($searchFormValues['kinds'])) {
+            $qb->andWhere(':kinds MEMBER OF book.kinds')
+                ->setParameter('kinds', $searchFormValues['kinds']);
+        }
 
         $query = $qb->getQuery();
         return $query->execute();
