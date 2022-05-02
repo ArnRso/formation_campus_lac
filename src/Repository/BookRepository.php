@@ -32,8 +32,8 @@ class BookRepository extends ServiceEntityRepository
         }
 
         if (!empty($searchFormValues['isbn'])) {
-            $qb->andWhere('book.isbn = :isbn')
-                ->setParameter('isbn', $searchFormValues['isbn']);
+            $qb->andWhere('book.isbn LIKE :isbn')
+                ->setParameter('isbn', '%' . $searchFormValues['isbn'] . '%');
         }
 
         if (!empty($searchFormValues['kinds'])) {

@@ -47,4 +47,11 @@ class BookSearchFormType extends AbstractType
                 'label' => 'Rechercher'
             ]);
     }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'csrf_protection' => false,
+        ]);
+    }
 }

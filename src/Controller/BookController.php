@@ -70,6 +70,12 @@ class BookController extends AbstractController
     #[Route('/books/{id}/edit', name: 'book_edit')]
     public function bookEdit($id, BookRepository $bookRepository, Request $request, EntityManagerInterface $entityManager)
     {
+        $user =$this->getUser();
+//        dd($user);
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('book_listing');
+        }
+
         // Récupère un livre en DB, celui qui a l'id précisé dans l'URL
         $book = $bookRepository->findOneBy([
             'id' => $id
