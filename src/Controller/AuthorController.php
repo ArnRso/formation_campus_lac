@@ -12,11 +12,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+// Permet d'attribuer un préfixe à l'url et aux noms de toutes les routes définies ans le controller
+#[Route('/authors', name: 'author_')]
 class AuthorController extends AbstractController
 {
     // La route tire partie du paramètre name.
     // Au sein de notre code, il faudra utiliser ce nom lorsqu'on voudra y faire référence
-    #[Route('/authors', name: 'author_listing')]
+    #[Route('/', name: 'listing')]
     public function authors(AuthorRepository $authorRepository)
     {
         $authors = $authorRepository->findAll();
@@ -25,7 +27,7 @@ class AuthorController extends AbstractController
         ]);
     }
 
-    #[Route('/authors/new', name: 'author_new')]
+    #[Route('/new', name: 'new')]
     public function authorNew(Request $request, EntityManagerInterface $entityManager)
     {
         // Crée une nouvelle instance d'un auteur, qu'on passera au formulaire
@@ -56,7 +58,7 @@ class AuthorController extends AbstractController
             ]);
     }
 
-    #[Route('/authors/{id}/edit', name: 'author_edit')]
+    #[Route('/{id}/edit', name: 'edit')]
     public function authorEdit($id, AuthorRepository $authorRepository, Request $request, EntityManagerInterface $entityManager)
     {
         // Récupère un auteur en DB, celui qui a l'id précisé dans l'URL
@@ -88,7 +90,7 @@ class AuthorController extends AbstractController
         ]);
     }
 
-    #[Route('/authors/{id}/delete', name: 'author_delete')]
+    #[Route('/{id}/delete', name: 'delete')]
     public function authorDelete($id, AuthorRepository $authorRepository, EntityManagerInterface $entityManager)
     {
         $author = $authorRepository->findOneBy([
@@ -107,7 +109,7 @@ class AuthorController extends AbstractController
 
 
     // créer une route et un controller avec comme url /authors/{id}
-    #[Route('/authors/{id}', name: 'author_detail')]
+    #[Route('/{id}', name: 'detail')]
     public function authorDetail ($id, AuthorRepository $authorRepository){
         $author = $authorRepository->findOneBy([
             'id' => $id
