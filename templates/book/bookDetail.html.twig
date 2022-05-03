@@ -3,6 +3,7 @@
 {% block body %}
     <h1>Détail du livre</h1>
     <article>
+        <img src="{{ vich_uploader_asset(book, 'coverImageFile') }}">
         <h2>
             {{ book.title }}
         </h2>

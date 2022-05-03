@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class BookType extends AbstractType
 {
@@ -44,6 +45,10 @@ class BookType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Merci de renseigner la référence ISBN du livre'
                 ]
+            ])
+            ->add('coverImageFile', VichImageType::class, [
+                'label' => 'Couverture du livre',
+                'required' => false
             ])
             ->add('kinds', EntityType::class, [
                 'label' => 'Genre du livre',
