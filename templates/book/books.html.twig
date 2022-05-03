@@ -35,7 +35,11 @@
         {% for book in books %}
             <div class="col col-3">
                 <article class="card">
-                    <img src="" class="card-img-top" alt="">
+                    {% if book.coverImageName %}
+                        <img src="{{ vich_uploader_asset(book, 'coverImageFile') }}" class="card-img-top" alt="">
+                    {%else%}
+                        <img src="https://cdn.pixabay.com/photo/2014/04/02/11/14/book-305625_1280.png" class="card-img-top" alt="">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ book.title }}</h5>
                         <p class="card-text">
