@@ -30,6 +30,9 @@ class AuthorController extends AbstractController
     #[Route('/new', name: 'new')]
     public function authorNew(Request $request, EntityManagerInterface $entityManager)
     {
+        if(!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('author_listing');
+        }
         // Crée une nouvelle instance d'un auteur, qu'on passera au formulaire
         $newAuthor = new Author();
         // Crée le formulaire en utilisant AuthorType, qui est le modèle de formulaire. Il contient
@@ -61,6 +64,9 @@ class AuthorController extends AbstractController
     #[Route('/{id}/edit', name: 'edit')]
     public function authorEdit($id, AuthorRepository $authorRepository, Request $request, EntityManagerInterface $entityManager)
     {
+        if(!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('author_listing');
+        }
         // Récupère un auteur en DB, celui qui a l'id précisé dans l'URL
         $author = $authorRepository->findOneBy([
             'id' => $id
@@ -93,6 +99,9 @@ class AuthorController extends AbstractController
     #[Route('/{id}/delete', name: 'delete')]
     public function authorDelete($id, AuthorRepository $authorRepository, EntityManagerInterface $entityManager)
     {
+        if(!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('author_listing');
+        }
         $author = $authorRepository->findOneBy([
             'id' => $id
         ]);

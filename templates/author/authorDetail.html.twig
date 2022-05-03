@@ -23,6 +23,9 @@
     </ul>
 
     <a href="{{ path('author_listing') }}" class="btn btn-secondary">Retour</a>
-    <a href="{{ path('author_edit', {id: author.id}) }}" class="btn btn-primary">Modifier l'auteur</a>
-    <a href="{{ path('author_delete', {id: author.id}) }}" class="btn btn-danger">Supprimer l'auteur</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('author_edit', {id: author.id}) }}" class="btn btn-primary">Modifier l'auteur</a>
+        <a href="{{ path('author_delete', {id: author.id}) }}" class="btn btn-danger">Supprimer l'auteur</a>
+    {% endif %}
+
 {% endblock %}
