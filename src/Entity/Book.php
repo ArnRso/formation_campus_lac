@@ -41,7 +41,7 @@ class Book
      */
     private $coverImageFile;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
     public function __construct()
