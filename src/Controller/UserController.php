@@ -45,7 +45,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/users/{id]/delete', name: 'user_delete')]
+    #[Route('/users/{id}/delete', name: 'user_delete')]
     public function userDelete(UserRepository $userRepository, EntityManagerInterface $entityManager, $id)
     {
         $user = $userRepository->findOneBy(['id' => $id]);
@@ -54,6 +54,41 @@ class UserController extends AbstractController
         }
         $entityManager->remove($user);
         $entityManager->flush();
+        return $this->redirectToRoute('user_listing');
+    }
+
+    #[Route('/users/{id}/toggle-role/{role}', name: 'user_toggle_role')]
+    public function toggleRole(
+        $id,
+        $role,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager
+    )
+    {
+        $user = $userRepository->findOneBy(['id' => $id]);
+
+        if (!$user) {
+            $this->addFlash('danger', 'Aucun utilisateur trouvé.');
+            return $this->redirectToRoute('user_listing');
+        }
+
+        $roles = $user->getRoles();
+
+        if (in_array($role, $roles)) {
+            // Je veux supprimer le role du tableau $roles
+            $key = array_search($role, $roles);
+            unset($roles[$key]);
+        } else {
+            $roles[] = $role;
+        }
+
+        // attribuer le nouveau tableau de roles à l'utilisateur (objet)
+        $user->setRoles($roles);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Roles modifiés avec succès');
         return $this->redirectToRoute('user_listing');
     }
 
@@ -78,6 +113,5 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form->createView()
         ]);
-
     }
 }
