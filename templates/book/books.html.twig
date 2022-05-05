@@ -48,6 +48,14 @@
                             ISBN : {{ book.isbn }}
                         </p>
                         <a href="{{ path('book_detail', {id: book.id}) }}" class="btn btn-outline-primary">Voir le détail</a>
+                        <a href="{{ path('like_book_ajax', {id: book.id}) }}" class="js-book-like">
+                            {% if app.user in book.likedByUsers %}
+                                Unlike
+                            {%else%}
+                                Like
+                            {% endif %}
+                            ({{book.likedByUsers|length}})
+                        </a>
                     </div>
                 </article>
             </div>

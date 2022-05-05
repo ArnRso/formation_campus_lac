@@ -10,6 +10,7 @@ use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -49,7 +50,7 @@ class BookController extends AbstractController
         // Traite la requête pour vérifier si les données du formulaire sont soumises
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             // Récupère les données du formulaire
             $bookToSave = $form->getData();
             // Le persist permet de préparer les requêtes (SQL) à exécuter en DB
@@ -65,7 +66,7 @@ class BookController extends AbstractController
 
         return $this->render('book/bookNew.html.twig', [
             'bookForm' => $form->createView()
-            ]);
+        ]);
     }
 
     #[Route('/books/{id}/edit', name: 'book_edit')]
@@ -90,7 +91,7 @@ class BookController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $bookToSave = $form->getData();
             $entityManager->persist($bookToSave);
             $entityManager->flush();
@@ -121,6 +122,28 @@ class BookController extends AbstractController
         return $this->redirectToRoute('book_listing');
     }
 
+    #[Route('/ajax/books/{id}/like', name: 'like_book_ajax')]
+    public function likeBookAjax($id, BookRepository $bookRepository, EntityManagerInterface $entityManager)
+    {
+        $book = $bookRepository->getBookWithUsers($id);
+        $user = $this->getUser();
+        if ($book->getLikedByUsers()->contains($user)) {
+            // unlike
+            $book->removeLikedByUser($user);
+        } else {
+            //like
+            $book->addLikedByUser($user);
+        }
+        $entityManager->persist($book);
+        $entityManager->flush();
+        $data = [
+            'success' => true,
+            'nbLikes' => count($book->getLikedByUsers()),
+            'currentUserLikes' => $book->getLikedByUsers()->contains($user)
+        ];
+
+        return new JsonResponse($data);
+    }
 
 
     // créer une route et un controller avec comme url /books/{id}

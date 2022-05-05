@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -54,6 +56,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Seriali
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'likedByUsers')]
+    private $likedBooks;
+
+    public function __construct()
+    {
+        $this->likedBooks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -238,5 +248,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Seriali
             // see section on salt below
             // $this->salt
             ) = unserialize($serialized);
+    }
+
+    /**
+     * @return Collection<int, Book>
+     */
+    public function getLikedBooks(): Collection
+    {
+        return $this->likedBooks;
+    }
+
+    public function addLikedBook(Book $likedBook): self
+    {
+        if (!$this->likedBooks->contains($likedBook)) {
+            $this->likedBooks[] = $likedBook;
+            $likedBook->addLikedByUser($this);
+        }
+        return $this;
+    }
+
+    public function removeLikedBook(Book $likedBook): self
+    {
+        if ($this->likedBooks->removeElement($likedBook)) {
+            $likedBook->removeLikedByUser($this);
+        }
+        return $this;
     }
 }

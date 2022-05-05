@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -44,9 +45,36 @@ class Book
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'likedBooks')]
+    #[ORM\JoinTable(name: 'user_like_books')]
+    private $likedByUsers;
+
     public function __construct()
     {
         $this->kinds = new ArrayCollection();
+        $this->likedByUsers = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getLikedByUsers(): Collection
+    {
+        return $this->likedByUsers;
+    }
+
+    public function addLikedByUser(User $likedByUser): self
+    {
+        if (!$this->likedByUsers->contains($likedByUser)) {
+            $this->likedByUsers[] = $likedByUser;
+        }
+        return $this;
+    }
+
+    public function removeLikedByUser(User $likedByUser): self
+    {
+        $this->likedByUsers->removeElement($likedByUser);
+        return $this;
     }
 
     /**

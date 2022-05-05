@@ -18,10 +18,15 @@ class BookRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('book')
             // Rajoute les tables souhaitées au select
-            ->select('book')
+            ->select('book', 'COUNT(hidden_liked_by_users) as HIDDEN nbLikes')
             // Rajoute les jointures souhaitées à la requete
             ->leftJoin('book.author', 'author')
             ->addSelect('author')
+            ->leftJoin('book.likedByUsers', 'hidden_liked_by_users')
+            ->leftJoin('book.likedByUsers', 'liked_by_users')
+            ->addSelect('liked_by_users')
+            ->orderBy('nbLikes', 'DESC')
+            ->groupBy('book')
         ;
 
         // Si la clé title n'est pas empty dans les données qui viennent du formulaire de recherche, on entre dans la condition
@@ -64,6 +69,19 @@ class BookRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
         ;
 
+        $query = $qb->getQuery();
+        return $query->getOneOrNullResult();
+    }
+
+    public function getBookWithUsers($id)
+    {
+        $qb = $this->createQueryBuilder('book')
+            ->select('book')
+            ->leftJoin('book.likedByUsers', 'liked_by_users')
+            ->addSelect('liked_by_users')
+            ->where('book.id = :id')
+            ->setParameter('id', $id)
+        ;
         $query = $qb->getQuery();
         return $query->getOneOrNullResult();
     }

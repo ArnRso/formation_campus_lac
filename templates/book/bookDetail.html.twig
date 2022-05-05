@@ -35,4 +35,12 @@
         <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-primary">Modifier le livre</a>
         <a href="{{ path('book_delete', {id: book.id}) }}" class="btn btn-danger">Supprimer le livre</a>
     {% endif %}
+    <a href="{{ path('like_book_ajax', {id: book.id}) }}" class="js-book-like">
+        {% if app.user in book.likedByUsers %}
+            Unlike
+        {%else%}
+            Like
+        {% endif %}
+        ({{book.likedByUsers|length}})
+    </a>
 {% endblock %}
